@@ -1,6 +1,7 @@
 package os.chat.server;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Vector;
 
 /**
@@ -29,7 +30,7 @@ public interface ChatServerManagerInterface extends Remote {
 	 * @return  the list of available chat rooms
 	 * @see Vector
 	 */
-	public Vector<String> getRoomsList();
+	public Vector<String> getRoomsList() throws RemoteException;
 	
         /**
 	 * Creates a new chat room with a specified room name <code>roomName</code>.
@@ -37,6 +38,6 @@ public interface ChatServerManagerInterface extends Remote {
 	 * @return <code>true</code> if the new chat room was successfully
 	 * created, <code>false</code> otherwise.
 	 */
-	public boolean createRoom(String roomName);
+	public boolean createRoom(String roomName) throws RemoteException;
 	
 }

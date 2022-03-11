@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
+import os.chat.ChatMain;
 import os.chat.client.CommandsFromServer;
 
 /**
@@ -21,8 +22,6 @@ import os.chat.client.CommandsFromServer;
  */
 public class ChatServer implements ChatServerInterface {
 	//const
-	public static final String SERVER_REGISTRY_NAME = "server";
-	private static final String DEFAULT_ROOM_NAME = "sports";
 	private static final int SERVER_REGISTRY_PORT = 0;
 	//vars
 	private String roomName;
@@ -42,22 +41,16 @@ public class ChatServer implements ChatServerInterface {
 		//register server to registry
 		try {
 			ChatServerInterface server = (ChatServerInterface) UnicastRemoteObject.exportObject(this, SERVER_REGISTRY_PORT);
-			registry = LocateRegistry.getRegistry();
-			registry.bind(SERVER_REGISTRY_NAME, server);
-		} catch (RemoteException | AlreadyBoundException e) {
+			registry = LocateRegistry.getRegistry(ChatMain.REGISTRY_PORT);
+			//generate room name
+			String registeredRoomName = ChatServerInterface.registeredRoomName(roomName);
+			registry.rebind(registeredRoomName, server);
+		} catch (RemoteException e) {
 			System.err.println("Could not register the server");
 			e.printStackTrace();
 		}
-		
 	}
 	
-	/**
-	 * Constructs the chatserver using the default room name
-	 */
-	public ChatServer() {
-		this(DEFAULT_ROOM_NAME);
-	}
-
 	/**
 	 * Publishes to all subscribed clients (i.e. all clients registered to a
 	 * chat room) a message send from a client.
@@ -65,12 +58,9 @@ public class ChatServer implements ChatServerInterface {
 	 * @param publisher the client from which the message originates
 	 */	
 	public void publish(String message, String publisher) {
-		
-		System.err.println("TODO: publish is not implemented");
-		
-		/*
-		 * TODO send the message to all registered clients
-		 */
+		for (CommandsFromServer commandsFromServer : registeredClients) {
+			
+		}
 	}
 
 	/**
@@ -79,12 +69,8 @@ public class ChatServer implements ChatServerInterface {
 	 * registry
 	 */
 	public void register(CommandsFromServer client) {
-		
-		System.err.println("TODO: register is not implemented");
-		
-		/*
-		 * TODO register the client
-		 */
+		//register new client
+		this.registeredClients.add(client);
 	}
 
 	/**
@@ -93,12 +79,12 @@ public class ChatServer implements ChatServerInterface {
 	 * registry
 	 */
 	public void unregister(CommandsFromServer client) {
-		
-		System.err.println("TODO: unregister is not implemented");
-		
-		/*
-		 * TODO unregister the client
-		 */
+		//unregister client if already registered. 
+		if(this.registeredClients.contains(client)) {
+			this.registeredClients.remove(client);
+		} else {
+			System.err.println("Client has tried to unregister without beeing registered, operation canceled");
+		}
 	}
 	
 	public String getRoomName() {
