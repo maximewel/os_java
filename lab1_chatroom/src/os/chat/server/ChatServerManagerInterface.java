@@ -1,5 +1,6 @@
 package os.chat.server;
 
+import java.rmi.Remote;
 import java.util.Vector;
 
 /**
@@ -18,7 +19,10 @@ import java.util.Vector;
  * <p>
  * (deletion of rooms not required)
  */
-public interface ChatServerManagerInterface {
+public interface ChatServerManagerInterface extends Remote {
+	//The manager is a singleton anyway, independently of the implementation used. The registry name
+	//shall remain the same.
+	public static final String SERVER_MANAGER_REGISTRY_NAME = "ChatServerManager";
 	
         /**
 	 * Getter method for list of available chat rooms.

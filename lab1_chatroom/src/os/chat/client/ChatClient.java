@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import os.chat.server.ChatServer;
 import os.chat.server.ChatServerInterface;
+import os.chat.server.ChatServerManagerInterface;
 
 /**
  * This class implements a chat client that can be run locally or remotely to
@@ -21,7 +22,7 @@ public class ChatClient implements CommandsFromWindow,CommandsFromServer {
 	 */
 	private String userName;
 	private Registry registry;
-	private ChatServerInterface server;
+	private ChatServerManagerInterface serverManager;
 	
   /**
    * The graphical user interface, accessed through its interface. In return,
@@ -42,11 +43,12 @@ public class ChatClient implements CommandsFromWindow,CommandsFromServer {
 		this.window = window;
 		this.userName = userName;
 		
+		//At construction, the client fetches the server manager
 		try {
 			registry = LocateRegistry.getRegistry();
-			server = (ChatServerInterface) registry.lookup(ChatServer.SERVER_REGISTRY_NAME);
+			serverManager = (ChatServerManagerInterface) registry.lookup(ChatServerManagerInterface.SERVER_MANAGER_REGISTRY_NAME);
 		} catch (RemoteException | NotBoundException e) {
-			System.err.println("Failure in retreival of the registry/server from the client constructor");
+			System.err.println("Failure in retreival of the server manager from the client");
 			e.printStackTrace();
 		}
 	}

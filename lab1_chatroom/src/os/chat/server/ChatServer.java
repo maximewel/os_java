@@ -26,6 +26,7 @@ public class ChatServer implements ChatServerInterface {
 	private static final int SERVER_REGISTRY_PORT = 0;
 	//vars
 	private String roomName;
+
 	private Vector<CommandsFromServer> registeredClients;
 	private Registry registry;
 	
@@ -98,6 +99,10 @@ public class ChatServer implements ChatServerInterface {
 		/*
 		 * TODO unregister the client
 		 */
+	}
+	
+	public String getRoomName() {
+		return roomName;
 	}
 	
 }

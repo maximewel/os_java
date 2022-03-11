@@ -15,7 +15,7 @@ public interface ChatServerInterface extends Remote {
 	 * receives a message from a client and send it to all subscribed clients
 	 * @param message The message to propagate
 	 */
-	public void publish(String message, String publisher) ;
+	public void publish(String message, String publisher);
 	
 	/**
 	 * registers a new client to the chat room
@@ -28,4 +28,10 @@ public interface ChatServerInterface extends Remote {
 	 * @param clientLookupName the name of the client as registered on the RMI registry
 	 */
 	public void unregister(CommandsFromServer client);
+	
+	/**
+	 * Get the rom name of this chatserver
+	 * @return
+	 */
+	public String getRoomName();
 }

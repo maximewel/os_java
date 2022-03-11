@@ -1,6 +1,12 @@
 package os.chat.server;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 /**
  * This class manages the available {@link ChatServer}s and available rooms.
@@ -12,16 +18,15 @@ import java.util.Vector;
  * looking them up from the {@link ChatClient}.
  */
 public class ChatServerManager implements ChatServerManagerInterface {
+	//const
+	private static final int SERVER_MANAGER_REGISTRY_PORT = 0;
 
-    /**
-     * NOTE: technically this vector is redundant, since the room name can also
-     * be retrieved from the chat server vector.
-     */
-	private Vector<String> chatRoomsList;
-	
+	//Remove chatroomnames as to keep both list synchronized
 	private Vector<ChatServer> chatRooms;
 
     private static ChatServerManager instance = null;
+    
+	private Registry registry;
 	
 	/**
 	 * Constructor of the <code>ChatServerManager</code>.
@@ -29,17 +34,26 @@ public class ChatServerManager implements ChatServerManagerInterface {
 	 * Must register its functionalities as stubs to be called from RMI by
 	 * the {@link ChatClient}.
 	 */
-	public ChatServerManager () {
+	private ChatServerManager () {
+		//Register this manager to the registry using the registry name
+		try {
+			ChatServerManagerInterface serverManager = (ChatServerManagerInterface) UnicastRemoteObject.exportObject(this, SERVER_MANAGER_REGISTRY_PORT);
+			registry = LocateRegistry.getRegistry();
+			registry.bind(ChatServerManagerInterface.SERVER_MANAGER_REGISTRY_NAME, serverManager);
+		} catch (RemoteException | AlreadyBoundException e) {
+			System.err.println("Could not register the server");
+			e.printStackTrace();
+		}
 		
 		// initial: we create a single chat room and the corresponding ChatServer
 		chatRooms.add(new ChatServer("sports"));
-		chatRoomsList.add("sports");
-		
-		/*
-		 * TODO register the server manager object as a "ChatServerManager" on the RMI registry
-		 * so it can be called by clients.
-		 */
-		
+	}
+	
+	public ChatServerManager ChatServerManagerInstance() {
+		if(instance == null) {
+			instance = new ChatServerManager();
+		}
+		return instance;
 	}
 
     /**
@@ -60,7 +74,7 @@ public class ChatServerManager implements ChatServerManagerInterface {
 	 * @see Vector
 	 */
 	public Vector<String> getRoomsList() {
-		return chatRoomsList;
+		return chatRooms.stream().map(ChatServer::getRoomName).collect(Collectors.toCollection(Vector::new));
 	}
 
         /**
