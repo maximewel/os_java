@@ -21,7 +21,7 @@ import os.chat.client.CommandsFromServer;
  */
 public class ChatServer implements ChatServerInterface {
 	//const
-	private static final String SERVER_REGISTRY_NAME = "server";
+	public static final String SERVER_REGISTRY_NAME = "server";
 	private static final String DEFAULT_ROOM_NAME = "sports";
 	private static final int SERVER_REGISTRY_PORT = 0;
 	//vars
