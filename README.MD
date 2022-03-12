@@ -1,0 +1,1 @@
+--add-opens lab1_chatroom/os.chat.server=java.rmi
