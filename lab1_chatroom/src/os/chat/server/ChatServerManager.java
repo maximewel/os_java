@@ -32,13 +32,12 @@ public class ChatServerManager implements ChatServerManagerInterface {
 	
 	/**
 	 * Constructor of the <code>ChatServerManager</code>.
-	 * Put the constructor in private to enforce singleton
+	 * --> Put the constructor in private to enforce singleton
 	 * <p>
 	 * Must register its functionalities as stubs to be called from RMI by
 	 * the {@link ChatClient}.
 	 */
 	private ChatServerManager () {
-	
 		//Register this manager to the registry using the registry name
 		try {
 			ChatServerManagerInterface serverManager = (ChatServerManagerInterface) UnicastRemoteObject.exportObject(this, SERVER_MANAGER_REGISTRY_PORT);
@@ -81,14 +80,13 @@ public class ChatServerManager implements ChatServerManagerInterface {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean createRoom(String roomName) {
+		if(getRoomsList().contains(roomName)) {
+			System.err.println("Tried to create room " + roomName + " that already exists");
+			return false;
+		}
 		
-		System.err.println("server manager method createRoom not implemented.");
-		
-		/*
-		 * TODO add the code to create a new room
-		 */
-		
-		return false;
+		chatRooms.add(new ChatServer(roomName));
+		return true;
 	}	
 	
 }

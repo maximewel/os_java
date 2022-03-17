@@ -15,23 +15,41 @@ import os.chat.server.ChatServerManager;
  *
  */
 public class ChatMain {
-	public static final int REGISTRY_PORT = new Random().nextInt(10000, 15000);
+	//Allow fast restart of the app
+	//public static final int REGISTRY_PORT = new Random().nextInt(10000, 15000);
+	//Finetune the port
+	public static final int REGISTRY_PORT = 5678;
 
 	public static void main(String[] args) {
+		//Start server (first start)
+		start_server();
+		
+
+		//create client(s)
+		start_client();
+	}
+	
+	/**
+	 * Start the backend of the app (create refistry + manager)
+	 */
+	public static void start_server() {
 		//Create the registry
 		try {
-			System.out.println("Initializing register at random port " + REGISTRY_PORT);
+			System.out.println("Initializing register at port " + REGISTRY_PORT);
 			LocateRegistry.createRegistry(REGISTRY_PORT);
 		} catch (RemoteException e) {
 			System.err.println("Registry creation failed");
 			e.printStackTrace();
 		}
-
-		single_client();
+		
+		//create the manager
+		ChatServerManager.getInstance();
 	}
 	
-	public static void single_client() {
-		ChatServerManager.getInstance();
+	/**
+	 * Open a client (Must have a server already setup)
+	 */
+	public static void start_client() {
 		ChatClientWindow.main(null);
 	}
 }

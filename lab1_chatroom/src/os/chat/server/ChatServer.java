@@ -1,6 +1,5 @@
 package os.chat.server;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -25,7 +24,7 @@ public class ChatServer implements ChatServerInterface {
 	private static final int SERVER_REGISTRY_PORT = 0;
 	//vars
 	private String roomName;
-
+	//rmi
 	private Vector<CommandsFromServer> registeredClients;
 	private Registry registry;
 	
@@ -58,8 +57,15 @@ public class ChatServer implements ChatServerInterface {
 	 * @param publisher the client from which the message originates
 	 */	
 	public void publish(String message, String publisher) {
+		System.out.println("Publish message from " + publisher);
 		for (CommandsFromServer commandsFromServer : registeredClients) {
-			
+			try {
+				commandsFromServer.receiveMsg(this.roomName, message);
+			} catch (RemoteException e) {
+				//When the connection fails, the server assumes there is no fallback possible and unregister the client
+				System.err.println("Connection to client failed - unregistering");
+				unregister(commandsFromServer);
+			}
 		}
 	}
 
@@ -70,6 +76,7 @@ public class ChatServer implements ChatServerInterface {
 	 */
 	public void register(CommandsFromServer client) {
 		//register new client
+		System.out.println("Adding new client for chatroom " + roomName);
 		this.registeredClients.add(client);
 	}
 

@@ -3,13 +3,11 @@ package os.chat.client;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
-
-import org.w3c.dom.ls.LSSerializer;
 
 import os.chat.ChatMain;
 import os.chat.server.ChatServer;
@@ -20,20 +18,15 @@ import os.chat.server.ChatServerManagerInterface;
  * This class implements a chat client that can be run locally or remotely to
  * communicate with a {@link ChatServer} using RMI.
  */
-public class ChatClient implements CommandsFromWindow, CommandsFromServer, Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4372402534162710053L;
+public class ChatClient implements CommandsFromWindow, CommandsFromServer {
 	
+	private static final int CLIENT_REGISTRY_PORT = 0;
 	/**
 	 * The name of the user of this client
 	 */
 	private String userName;
 	private Registry registry;
 	private ChatServerManagerInterface serverManager;
-	//avoir calls to registry
-	private ChatServerInterface currentChatServer = null;
 	
   /**
    * The graphical user interface, accessed through its interface. In return,
@@ -58,6 +51,10 @@ public class ChatClient implements CommandsFromWindow, CommandsFromServer, Seria
 		try {
 			registry = LocateRegistry.getRegistry(ChatMain.REGISTRY_PORT);
 			serverManager = (ChatServerManagerInterface) registry.lookup(ChatServerManagerInterface.SERVER_MANAGER_REGISTRY_NAME);
+			//Register itself so that it can be called (receivemsg from server)
+			CommandsFromServer commandsFromServer = (CommandsFromServer) UnicastRemoteObject.exportObject(this, CLIENT_REGISTRY_PORT);
+			registry.rebind(userName, commandsFromServer);
+
 		} catch (RemoteException | NotBoundException e) {
 			System.err.println("Failure in retreival of the server manager from the client");
 			e.printStackTrace();
@@ -80,16 +77,15 @@ public class ChatClient implements CommandsFromWindow, CommandsFromServer, Seria
 		//operation failed
 		if(chatServer == null) {
 			System.err.println("Failure - Client can not lookup chat server");
-			return false;
+			return;
 		}
 		
 		try {
 			chatServer.publish(message, this.userName);
 		} catch (RemoteException e) {
-			System.err.println("Failure - Client can not register to chat server");
+			System.err.println("Failure - Client can not send message to chatmanager");
 			e.printStackTrace();
 		}
-		return true;
 	}
 
 	/**
@@ -127,11 +123,12 @@ public class ChatClient implements CommandsFromWindow, CommandsFromServer, Seria
 		
 		try {
 			chatServer.register(this);
+			return true;
 		} catch (RemoteException e) {
 			System.err.println("Failure - Client can not register to chat server");
 			e.printStackTrace();
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -179,13 +176,13 @@ public class ChatClient implements CommandsFromWindow, CommandsFromServer, Seria
      * <code>false</code> otherwise.
      */
 	public boolean createNewRoom(String roomName) {
-		
-		System.err.println("TODO: createNewRoom is not implemented.");
-
-		/*
-		 * TODO implement the method to ask the server to create a new room (second part of the assignment only).
-		 */		
-		
+		try {
+			serverManager.createRoom(roomName);
+			return true;
+		} catch (RemoteException e) {
+			System.err.println("Failure - Client can not register to chat server");
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -207,8 +204,7 @@ public class ChatClient implements CommandsFromWindow, CommandsFromServer, Seria
 	 * @param message the message to display
 	 */
 	public void receiveMsg(String roomName, String message) {
+		System.out.println("Receive message " + message + " for chatroom " + roomName);
 		this.window.publish(roomName, message);
 	}
-		
-	// This class does not contain a main method. You should launch the whole program by launching ChatClientWindow's main method.
 }

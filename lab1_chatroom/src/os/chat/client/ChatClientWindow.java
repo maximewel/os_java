@@ -12,7 +12,6 @@ package os.chat.client;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +30,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class ChatClientWindow implements CommandsToWindow, Serializable {
+public class ChatClientWindow implements CommandsToWindow {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5536412843184807657L;
 	// graphical elements
 	private final JFrame frmChatClient;
 	private final JTextField textField;
@@ -204,6 +199,7 @@ public class ChatClientWindow implements CommandsToWindow, Serializable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// get the selected room name from the list
+				System.out.println("Joining from window");
 				int index = listChatRooms.getSelectedIndex();
 				if (index == -1) {
 					// no selection: warn with a pop up.
@@ -233,6 +229,7 @@ public class ChatClientWindow implements CommandsToWindow, Serializable {
 							// add this to the tabs
 							tabbedPane.add(jsc, r);
 							// and store it to the map
+							System.out.println("Adding " + r + " to chats");
 							chats.put(r, jsc) ;
 						}
 					}

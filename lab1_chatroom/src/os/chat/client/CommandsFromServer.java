@@ -1,11 +1,13 @@
 package os.chat.client;
 
-
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * This is the interface between {@link ChatClient} and {@link ChatServer}.
+ * Extends remote so that it can be called remotely by the server to publish a message
  */
-public interface CommandsFromServer{
+public interface CommandsFromServer extends Remote {
 	
 	/**
 	 * Publish a <code>message</code> in the chat room <code>roomName</code>
@@ -18,7 +20,5 @@ public interface CommandsFromServer{
 	 * @param roomName the name of the chat room
 	 * @param message the message to display
 	 */
-	public void receiveMsg(String roomName, String message);
+	public void receiveMsg(String roomName, String message) throws RemoteException;
 }
-
-
