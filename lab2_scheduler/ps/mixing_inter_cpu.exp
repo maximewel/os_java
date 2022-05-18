@@ -1,0 +1,6 @@
+name mixing_inter_cpu 
+comment This experiment contains 4 runs of the cpu intensive experiment with the algorithms
+run mixing_inter_cpu algorithm FCFS key "FCFS"
+run mixing_inter_cpu algorithm SJF key "SJF"
+run mixing_inter_cpu algorithm RR 1 key "RR"
+run mixing_inter_cpu algorithm SJFA 0.5 key "SJFA"

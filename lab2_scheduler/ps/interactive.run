@@ -1,0 +1,11 @@
+name interactive
+comment Simulates interactive software
+algorithm FCFS
+seed 42
+numprocs 5
+firstarrival 0.0
+interarrival constant 0.0
+duration constant 5.0
+cpuburst constant 0.5
+ioburst uniform 1 5
+basepriority 1.0

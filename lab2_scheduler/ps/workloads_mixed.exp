@@ -1,0 +1,6 @@
+name workloads_mixed
+comment This experiment contains 4 runs of the mixed load experiment with the algorithms
+run mixedload algorithm FCFS key "FCFS"
+run mixedload algorithm RR 1 key "RR"
+run mixedload algorithm SJF key "SJF"
+run mixedload algorithm SJFA 0.5 key "SJFA"

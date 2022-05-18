@@ -1,0 +1,42 @@
+logdir .
+logfn logfile.html
+imagename gifim
+user Local User
+quiet
+portable true
+
+
+run cpuintensive_overhead
+exp varying_rr_cpu_overhead
+
+
+run interactive
+run mixedload
+run cpuintensive
+
+exp workloads_interactive
+exp workloads_cpuintensive
+exp workloads_mixed
+
+
+run mixing_cpu_mixed
+run mixing_inter_cpu
+run mixing_mixed_inter
+
+exp mixing_cpu_mixed
+exp mixing_inter_cpu
+exp mixing_mixed_inter
+
+
+exp varying_rr_cpu
+exp varying_rr_interactive
+exp varying_rr_mixed
+
+
+run highload_interactive
+run highload_cpuintensive
+run highload_mixedload
+
+exp highload_interactive
+exp highload_cpuintensive
+exp highload_mixedload

@@ -1,0 +1,11 @@
+name highload_mixedload
+comment Simulates load mixed between io and cpu bursts
+algorithm FCFS
+seed 42
+numprocs 500
+firstarrival 0
+interarrival uniform 20 100
+duration constant 20
+cpuburst uniform 1 5
+ioburst uniform 1 5
+basepriority 1.0

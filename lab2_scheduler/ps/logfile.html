@@ -1,0 +1,153 @@
+<HEAD>
+<TITLE>Process Scheduling for Local User generated Thu Apr 07 13:27:59 CEST 2022</TITLE>
+</HEAD>
+<BODY BGCOLOR=#FFFFFF><H3>Process Scheduling for Local User generated Thu Apr 07 13:27:59 CEST 2022</H3>
+
+<H6>Process Scheduling Simulator
+version 1.100L288 by S. Robbins 
+supported by NSF grants 
+DUE-9750953 and DUE-9752165.
+<br>See <a href=http://vip.cs.utsa.edu/nsf>http://vip.cs.utsa.edu/nsf</a> for simulator information.<br><br>
+Java version 1.8.0_321 OS Windows 10 version 10.0 25343694377
+<br></H6>
+
+<hr>
+
+<b>Configuration File:</b><br>
+logdir .<br>
+logfn logfile.html<br>
+imagename gifim<br>
+user Local User<br>
+quiet<br>
+portable true<br>
+<br>
+run myrundeux<br>
+run interactive<br>
+run mixedLoad<br>
+run cpuIntensive<br>
+<br>
+exp workloads
+<hr>
+
+<b>Number of Run Files: 2</b><br>
+--------------------<br>
+name myrundeux<br>
+comment This contains two types of processes<br>
+algorithm SJF<br>
+seed 5000<br>
+numprocs 15<br>
+firstarrival 0.0<br>
+interarrival constant 0.0<br>
+duration uniform 10.0 15.0<br>
+cpuburst constant 10.0<br>
+ioburst uniform 10 20<br>
+basepriority 1.0<br>
+<br>
+numprocs 15<br>
+firstarrival 0.0<br>
+interarrival constant 0.0<br>
+duration constant 4.0<br>
+cpuburst constant 1.0<br>
+ioburst uniform 10.0 20.0<br>
+basepriority 1.0<br>
+--------------------<br>
+name interactive<br>
+comment Simulates interactive software<br>
+algorithm SJF<br>
+seed 42<br>
+numprocs 5<br>
+firstarrival 0.0<br>
+interarrival constant 0.0<br>
+duration constant 5.0<br>
+cpuburst constant 0.5<br>
+ioburst uniform 1 5<br>
+basepriority 1.0
+<hr>
+
+<b>Number of Experiment Files: 1</b><br>
+--------------------<br>
+name workloads<br>
+comment This experiment contains 3 runs of the interactive experiment with the three algorithms<br>
+run interactive algorithm FCFS key "FCFS"<br>
+run interactive algorithm RR 1 key "RR"<br>
+run interactive algorithm SJF key "SJF"<br>
+run interactive algorithm SJFA 0.5 key "SJFA"
+<hr>
+
+<center><TABLE Border=1>
+<TR>
+<TD Align=center COLSPAN=5>Experimental Run Information for 2 Runs
+</TR>
+<TR><TABLE Border=2>
+<TR COLSPAN=8>
+<TD Align=center COLSPAN=7>
+myrundeux: &nbsp&nbsp This contains two types of processes &nbsp&nbsp 
+Seed: 0&nbsp&nbsp Algorithm: SJF</TD></TR>
+<TR><TD Align=center>Group</TD>
+<TD Align=center>Processes</TD>
+<TD Align=center>First Arrival</TD>
+<TD Align=center>Interarrival</TD>
+<TD Align=center>Duration</TD>
+<TD Align=center>CPU Burst</TD>
+<TD Align=center>I/O Burst</TD>
+</TR>
+<TR><TD Align=center>1</TD><TD ALign=right>15</TD><TD Align=right>0.0</TD><TD>constant        0.00</TD><TD>uniform        10.00 15.00</TD><TD>constant       10.00</TD><TD>uniform        10.00 20.00</TD></TR>
+<TR><TD Align=center>2</TD><TD ALign=right>15</TD><TD Align=right>0.0</TD><TD>constant        0.00</TD><TD>constant        4.00</TD><TD>constant        1.00</TD><TD>uniform        10.00 20.00</TD></TR>
+</TABLE></TR>
+<TR><TABLE Border=2>
+<TR COLSPAN=8>
+<TD Align=center COLSPAN=7>
+interactive: &nbsp&nbsp Simulates interactive software &nbsp&nbsp 
+Seed: 0&nbsp&nbsp Algorithm: SJF</TD></TR>
+<TR><TD Align=center>Group</TD>
+<TD Align=center>Processes</TD>
+<TD Align=center>First Arrival</TD>
+<TD Align=center>Interarrival</TD>
+<TD Align=center>Duration</TD>
+<TD Align=center>CPU Burst</TD>
+<TD Align=center>I/O Burst</TD>
+</TR>
+<TR><TD Align=center>1</TD><TD ALign=right>5</TD><TD Align=right>0.0</TD><TD>constant        0.00</TD><TD>constant        5.00</TD><TD>constant         .50</TD><TD>uniform         1.00 5.00</TD></TR>
+</TABLE></TR>
+</TR></TABLE></center>
+<p><hr><p>
+
+<Center><TABLE Border=1>
+<TR>
+<TD Align=center COLSPAN=4>Experimental Runs For 1 Experiment
+</TR><TR>
+<TD Align=left>Experiment</TD>
+<TD ALign=center>Commentary</TD>
+<TD ALign=center>Run</TD>
+<TD ALign=center>Modifications</TD>
+</TR>
+<TR><TD Align=center>workloads</td>
+<TD Align=left>This experiment contains 3 runs of the interactive experiment with the three algorithms</TD>
+<TD Align=left>interactive_1</TD>
+<TD Align=left>algorithm FCFS</TD>
+</TR>
+<TR><TD></TD><TD></TD><TD></TD><TD Align=left>key FCFS</TD>
+</TR>
+<TR><TD> </td>
+<TD></TD>
+<TD Align=left>interactive_2</TD>
+<TD Align=left>algorithm RR 1</TD>
+</TR>
+<TR><TD></TD><TD></TD><TD></TD><TD Align=left>key RR</TD>
+</TR>
+<TR><TD> </td>
+<TD></TD>
+<TD Align=left>interactive_3</TD>
+<TD Align=left>algorithm SJF</TD>
+</TR>
+<TR><TD></TD><TD></TD><TD></TD><TD Align=left>key SJF</TD>
+</TR>
+<TR><TD> </td>
+<TD></TD>
+<TD Align=left>interactive_4</TD>
+<TD Align=left>algorithm SJFA 0.5</TD>
+</TR>
+<TR><TD></TD><TD></TD><TD></TD><TD Align=left>key SJFA</TD>
+</TR>
+</TR></TABLE></center>
+

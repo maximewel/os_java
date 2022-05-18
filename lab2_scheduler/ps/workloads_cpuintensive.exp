@@ -1,0 +1,6 @@
+name workloads_cpuintensive
+comment This experiment contains 4 runs of the cpu intensive experiment with the algorithms
+run cpuintensive algorithm FCFS key "FCFS"
+run cpuintensive algorithm SJF key "SJF"
+run cpuintensive algorithm RR 1 key "RR"
+run cpuintensive algorithm SJFA 0.5 key "SJFA"
